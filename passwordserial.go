@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"strings"
 )
 
@@ -25,11 +24,6 @@ func NewPassword(length int) *PasswordSerial {
 	p.Arr = strings.Split(alpha+num+mark, "")
 	p.Max = len(p.Arr)
 	return p
-}
-
-// ToString 文字列へ
-func (p *PasswordSerial) ToString() string {
-	return fmt.Sprintf("Length=%d", p.Length)
 }
 
 // Next 次へ
@@ -58,10 +52,10 @@ func (p *PasswordSerial) Next() bool {
 }
 
 // GetPassword もじ
-func (p PasswordSerial) GetPassword() string {
-	result := ""
+func (p *PasswordSerial) GetPassword() string {
+	var result strings.Builder
 	for wk := p.CurrentPosition; wk >= 0; wk-- {
-		result += p.Arr[p.Characters[wk]]
+		result.WriteString(p.Arr[p.Characters[wk]])
 	}
-	return result
+	return result.String()
 }
