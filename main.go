@@ -5,20 +5,32 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/yeka/zip"
 )
 
 func main() {
-	r, err := zip.OpenReader(os.Args[1])
+	if len(os.Args) != 3 {
+		fmt.Println("zip_pass_analyze ファイル名 パスワードの長さ")
+		return
+	}
+	filename := os.Args[1]
+	passwordLength, _ := strconv.Atoi(os.Args[2])
+	if f, err := os.Stat(filename); os.IsNotExist(err) || f.IsDir() {
+		fmt.Println("zipファイルは存在しません！")
+		return
+	}
+
+	r, err := zip.OpenReader(filename)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer r.Close()
 
 	start := time.Now()
-	a := NewPassword(4)
+	a := NewPassword(passwordLength)
 
 	isSuccess := false
 	for _, f := range r.File {
