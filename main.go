@@ -48,7 +48,6 @@ func main() {
 				}
 				continue
 			}
-			defer r.Close()
 			buf, err := ioutil.ReadAll(r)
 			if err != nil {
 				if !a.Next() {
